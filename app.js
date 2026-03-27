@@ -140,8 +140,8 @@ async function generate() {
 
     const response = await fetch(PROXY_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: MODEL, body: requestBody })
+      body: JSON.stringify({ model: MODEL, body: requestBody }),
+      redirect: 'follow'
     });
 
     if (!response.ok) {
