@@ -149,7 +149,23 @@ async function generate() {
       throw new Error(errData.error?.message || `API 錯誤 (${response.status})`);
     }
 
-    const data = await response.json();
+    const rawText = await response.text();
+    console.log('Proxy raw response length:', rawText.length);
+    console.log('Proxy raw response (first 500 chars):', rawText.substring(0, 500));
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseErr) {
+      throw new Error('回應解析失敗：' + rawText.substring(0, 200));
+    }
+
+    console.log('Parsed response keys:', Object.keys(data));
+    if (data.error) {
+      console.error('API error:', data.error);
+      throw new Error(data.error.message || JSON.stringify(data.error));
+    }
+
     handleResponse(data, wantImage);
 
   } catch (err) {
@@ -179,7 +195,8 @@ function handleResponse(data, wantImage) {
 
   const candidates = data.candidates;
   if (!candidates || candidates.length === 0) {
-    showError('未能生成結果，請調整描述後重試');
+    console.error('No candidates in response. Full response:', JSON.stringify(data).substring(0, 1000));
+    showError('未能生成結果。回應內容：' + JSON.stringify(data).substring(0, 300));
     return;
   }
 
