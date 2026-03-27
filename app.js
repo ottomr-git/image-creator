@@ -1,7 +1,7 @@
 // ===== Config =====
-const API_KEY = 'AIzaSyDRWhystNiIygr0cfAURNTnbx9v6ikFKus';
+// API Key 存放在 Google Apps Script 端，前端不暴露
+const PROXY_URL = ''; // 部署 proxy.gs 後填入
 const MODEL = 'gemini-2.5-flash-preview-image-generation';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
 // ===== State =====
 let selectedPurpose = 'social';
@@ -134,10 +134,14 @@ async function generate() {
   showLoading();
 
   try {
-    const response = await fetch(API_URL, {
+    if (!PROXY_URL) {
+      throw new Error('尚未設定 API 代理網址，請先部署 proxy.gs');
+    }
+
+    const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({ model: MODEL, body: requestBody })
     });
 
     if (!response.ok) {
