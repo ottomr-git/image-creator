@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配圖製作工具 — RIMAN 力曼</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="brand-badge">RIMAN</div>
+      <h1>配圖製作工具</h1>
+      <p class="subtitle">輸入描述或上傳參考圖，一鍵生成品牌配圖</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 輸入區 -->
+    <section class="section">
+      <label class="label">圖片描述</label>
+      <textarea class="input-prompt" id="prompt" placeholder="例如：一位亞洲女性在使用保養品，背景為淺金色調，溫暖柔和的光線" rows="3"></textarea>
+    </section>
+
+    <!-- 參考圖片上傳 -->
+    <section class="section">
+      <label class="label">參考圖片 <span class="label-hint">（選填）</span></label>
+      <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFileUpload(event)">
+        <div class="upload-placeholder" id="upload-placeholder">
+          <span class="upload-icon">&#128247;</span>
+          <span>點擊或拖曳上傳參考圖片</span>
+        </div>
+        <div class="upload-preview" id="upload-preview" style="display:none">
+          <img id="preview-img" src="" alt="preview">
+          <button class="remove-btn" onclick="removeImage(event)">&#10005;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 用途選擇 -->
+    <section class="section">
+      <label class="label">圖片用途</label>
+      <div class="option-grid" id="purpose-options">
+        <div class="option-card selected" data-value="social" onclick="selectPurpose(this)">
+          <div class="option-ratio">1:1</div>
+          <div class="option-name">社群貼文</div>
+        </div>
+        <div class="option-card" data-value="message" onclick="selectPurpose(this)">
+          <div class="option-ratio">1:1</div>
+          <div class="option-name">圖文訊息</div>
+        </div>
+        <div class="option-card" data-value="slide-h" onclick="selectPurpose(this)">
+          <div class="option-ratio">16:9</div>
+          <div class="option-name">簡報配圖</div>
+        </div>
+        <div class="option-card" data-value="slide-v" onclick="selectPurpose(this)">
+          <div class="option-ratio">9:16</div>
+          <div class="option-name">簡報配圖</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 輸出方式 -->
+    <section class="section">
+      <label class="label">輸出方式</label>
+      <div class="toggle-group" id="output-mode">
+        <button class="toggle-btn active" data-value="image-text" onclick="selectOutput(this)">圖加文</button>
+        <button class="toggle-btn" data-value="text-only" onclick="selectOutput(this)">純文字描述</button>
+      </div>
+    </section>
+
+    <!-- 生成按鈕 -->
+    <div class="action-area">
+      <button class="btn-generate" id="btn-generate" onclick="generate()">生成圖片</button>
+    </div>
+
+    <!-- 結果區 -->
+    <section class="section result-area" id="result-area" style="display:none">
+      <label class="label">生成結果</label>
+
+      <!-- Loading -->
+      <div class="loading" id="loading" style="display:none">
+        <div class="spinner"></div>
+        <p>圖片生成中，請稍候…</p>
+      </div>
+
+      <!-- 圖片結果 -->
+      <div id="result-content" style="display:none">
+        <div class="result-image-wrapper" id="result-image-wrapper" style="display:none">
+          <img id="result-image" src="" alt="generated image">
+        </div>
+        <div class="result-text" id="result-text" style="display:none"></div>
+        <div class="result-actions">
+          <button class="btn-download" id="btn-download" onclick="downloadImage()" style="display:none">下載圖片</button>
+          <button class="btn-retry" onclick="generate()">重新生成</button>
+        </div>
+      </div>
+
+      <!-- 錯誤 -->
+      <div class="error-msg" id="error-msg" style="display:none"></div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
