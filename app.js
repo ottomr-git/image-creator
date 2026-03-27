@@ -1,7 +1,7 @@
 // ===== Config =====
 // API Key 存放在 Google Apps Script 端，前端不暴露
 const PROXY_URL = 'https://script.google.com/macros/s/AKfycbxOfWnAiZSL2kjdn0IACKkmAq0OFnRbMEfAi79aIJpCWrdraOFozdKFCK6JpNRMm8JCTQ/exec';
-const MODEL = 'gemini-2.5-flash-preview-image-generation';
+const MODEL = 'gemini-3.1-flash-image-preview';
 
 // ===== State =====
 let selectedPurpose = 'social';
@@ -188,14 +188,15 @@ function handleResponse(data, wantImage) {
   let textContent = '';
 
   parts.forEach(part => {
-    if (part.inline_data) {
+    // API 回傳可能用 inlineData (camelCase) 或 inline_data (snake_case)
+    const imgData = part.inline_data || part.inlineData;
+    if (imgData) {
       hasImage = true;
-      const imgSrc = `data:${part.inline_data.mime_type};base64,${part.inline_data.data}`;
+      const mime = imgData.mime_type || imgData.mimeType;
+      const b64 = imgData.data;
+      const imgSrc = `data:${mime};base64,${b64}`;
       resultImage.src = imgSrc;
-      generatedImageData = {
-        mimeType: part.inline_data.mime_type,
-        data: part.inline_data.data
-      };
+      generatedImageData = { mimeType: mime, data: b64 };
       imageWrapper.style.display = 'block';
       btnDownload.style.display = 'inline-block';
     }

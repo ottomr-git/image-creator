@@ -11,7 +11,7 @@ var GEMINI_API_KEY = 'AIzaSyDRWhystNiIygr0cfAURNTnbx9v6ikFKus';
 function doPost(e) {
   try {
     var payload = JSON.parse(e.postData.contents);
-    var model = payload.model || 'gemini-2.5-flash-preview-image-generation';
+    var model = payload.model || 'gemini-3.1-flash-image-preview';
     var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_API_KEY;
 
     var options = {
