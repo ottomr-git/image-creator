@@ -1,6 +1,6 @@
 // ===== Config =====
 // API Key 存放在 Google Apps Script 端，前端不暴露
-const PROXY_URL = ''; // 部署 proxy.gs 後填入
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbxOfWnAiZSL2kjdn0IACKkmAq0OFnRbMEfAi79aIJpCWrdraOFozdKFCK6JpNRMm8JCTQ/exec';
 const MODEL = 'gemini-2.5-flash-preview-image-generation';
 
 // ===== State =====
