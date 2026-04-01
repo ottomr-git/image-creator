@@ -1,6 +1,6 @@
 // ===== Config =====
-// API Key 存放在 Google Apps Script 端，前端不暴露
-const PROXY_URL = 'https://script.google.com/macros/s/AKfycbx6A7AZldJ_8vjWf3a5VXu1lD1QKIUmGPl1YT6SrWsA8vpo3k6FWNAZ-7nJ5rnJ2jp2/exec';
+// API Key 存放在 Cloudflare Worker 端，前端不暴露
+const PROXY_URL = 'https://gemini-proxy.otto-mr.workers.dev';
 const MODEL = 'gemini-3.1-flash-image-preview';
 
 // ===== State =====
