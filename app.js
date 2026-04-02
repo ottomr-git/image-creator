@@ -5,14 +5,14 @@ const MODEL = 'gemini-3.1-flash-image-preview';
 
 // ===== Products =====
 const PRODUCTS = [
-  { id: 'icd-derma-set',        name: '活妍專科保養組', image: 'products/icd/icd-derma-set/RIMAN_BooSeBoo-Essentials__Web-Image_v1_NL.jpg' },
+  { id: 'icd-derma-set',        name: '活妍專科保養組', image: 'products/icd/icd-derma-set/CMS_ICD-Dermatology-First-Package_TW-3.jpg' },
   { id: 'icd-derma-cream',      name: '活妍奇肌霜',     image: 'products/icd/icd-derma-cream/TL_DermatologyCream_DFLT.jpg' },
   { id: 'icd-oil-mist',         name: '油水平衡噴霧',   image: 'products/icd/icd-oil-mist/TL_TwoPhaseOilMist_DFLT.jpg' },
   { id: 'icd-calming-gel',      name: '舒緩平衡凝露',   image: 'products/icd/icd-calming-gel/TL_CalmingBalanceGel_DFLT1.jpg' },
   { id: 'icd-cleansing-powder', name: '活膚潔顏粉',     image: 'products/icd/icd-cleansing-powder/TL_CleansingPowderWash_DFLT.jpg' },
   { id: 'icd-cleansing-oil',    name: '淨膚卸妝油',     image: 'products/icd/icd-cleansing-oil/TL_MoistureCleansingOil_DFLT.jpg' },
   { id: 'icd-sunscreen',        name: '極效保濕防曬乳', image: 'products/icd/icd-sunscreen/TL_MoistureLayerSunScreenSPF50DEFAULT_1023.jpg' },
-  { id: 'icd-bb-cream',         name: '輕透光感BB霜',   image: '' },
+  { id: 'icd-bb-cream',         name: '輕透光感BB霜',   image: 'products/icd/icd-bb-cream/TL_SheerGlowBB.jpg' },
 ];
 
 // ===== State =====
