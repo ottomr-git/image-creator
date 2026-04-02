@@ -9,6 +9,29 @@
 </head>
 <body>
 
+  <nav class="riman-nav">
+    <div class="riman-nav-inner">
+      <a class="riman-nav-home" href="/">RIMAN 工具箱</a>
+      <div class="riman-nav-tools">
+        <a href="/skin-consultation/">🌿 肌膚檢測</a>
+        <a href="/product-calculator/">🧮 產品計算機</a>
+        <a href="/image-creator/" class="active">🎨 配圖製作</a>
+        <a href="/riman-reward/">💡 新制度解讀</a>
+      </div>
+    </div>
+  </nav>
+  <style>
+    .riman-nav{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #E8E0D0;font-family:'Noto Sans TC',-apple-system,sans-serif;}
+    .riman-nav-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:44px;}
+    .riman-nav-home{font-size:13px;font-weight:700;letter-spacing:1px;color:#B8860B;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+    .riman-nav-home::after{content:'·';margin-left:16px;color:#E8E0D0;}
+    .riman-nav-tools{display:flex;align-items:center;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .riman-nav-tools::-webkit-scrollbar{display:none;}
+    .riman-nav-tools a{font-size:12.5px;color:#888;text-decoration:none;padding:5px 10px;border-radius:20px;white-space:nowrap;transition:all .2s;}
+    .riman-nav-tools a:hover{color:#B8860B;background:#FAF6EE;}
+    .riman-nav-tools a.active{color:#B8860B;background:#FAF6EE;font-weight:500;}
+  </style>
+
   <header class="header">
     <div class="container">
       <div class="brand-badge">RIMAN</div>
