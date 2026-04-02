@@ -175,12 +175,29 @@ async function generate() {
   const wantImage = selectedOutput === 'image-text';
 
   // Build system prompt
-  let systemPrompt = `你是一位專業的品牌視覺設計師。請根據以下描述生成圖片。
-用途：${purpose.label}
-比例：${purpose.ratio}`;
+  const hasRef = !!referenceImageData;
 
-  if (!wantImage) {
-    systemPrompt = `你是一位專業的品牌視覺設計師。請根據以下描述，提供詳細的圖片設計文字描述（包含構圖、色彩、元素配置等），不需要生成圖片。
+  let systemPrompt;
+  if (wantImage) {
+    if (hasRef) {
+      systemPrompt = `你是一位專業的品牌視覺設計師，擅長將產品融入場景生成自然、精緻的品牌配圖。
+用途：${purpose.label}
+比例：${purpose.ratio}
+
+產品合成規則（非常重要）：
+- 保留參考圖中產品的外觀、標籤、顏色、材質，不可更改或模糊
+- 將產品自然地融入場景中，讓產品與背景光線、陰影、透視一致
+- 產品擺放要合理（例如桌面、托盤、植物旁），不可懸浮或突兀剪貼
+- 整體畫面要有統一的光源與色調，產品與場景渾然一體
+- 風格簡潔、質感高級，符合美妝保養品牌的視覺調性`;
+    } else {
+      systemPrompt = `你是一位專業的品牌視覺設計師。請根據以下描述生成圖片。
+用途：${purpose.label}
+比例：${purpose.ratio}
+風格：簡潔、質感高級，符合美妝保養品牌的視覺調性`;
+    }
+  } else {
+    systemPrompt = `你是一位專業的品牌視覺設計師。請根據以下描述，提供詳細的圖片設計文字描述（包含構圖、色彩、元素配置、光線方向等），不需要生成圖片。
 用途：${purpose.label}
 比例：${purpose.ratio}`;
   }
@@ -196,7 +213,6 @@ async function generate() {
         data: referenceImageData.data
       }
     });
-    parts[0].text += '\n\n（請參考上傳的圖片風格）';
   }
 
   // Build request body
