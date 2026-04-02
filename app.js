@@ -61,7 +61,20 @@ function selectProduct(product, card) {
   // 把產品圖片轉成 base64 作為參考圖
   const img = new Image();
   img.crossOrigin = 'anonymous';
+  img.onerror = function () {
+    // 圖片載入失敗（例如尚未放入圖片素材），取消選擇
+    selectedProductId = null;
+    card.classList.remove('selected');
+    resetUploadArea();
+  };
   img.onload = function () {
+    // 防護：寬高為 0 代表圖片損毀，避免送出壞掉的 base64
+    if (img.naturalWidth === 0 || img.naturalHeight === 0) {
+      selectedProductId = null;
+      card.classList.remove('selected');
+      resetUploadArea();
+      return;
+    }
     const canvas = document.createElement('canvas');
     canvas.width = img.naturalWidth;
     canvas.height = img.naturalHeight;
