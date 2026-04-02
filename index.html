@@ -48,9 +48,15 @@
       <textarea class="input-prompt" id="prompt" placeholder="例如：一位亞洲女性在使用保養品，背景為淺金色調，溫暖柔和的光線" rows="3"></textarea>
     </section>
 
+    <!-- 產品選擇器 -->
+    <section class="section">
+      <label class="label">選擇力曼產品 <span class="label-hint">（選填，選後自動帶入參考圖）</span></label>
+      <div class="product-scroll" id="product-scroll"></div>
+    </section>
+
     <!-- 參考圖片上傳 -->
     <section class="section">
-      <label class="label">參考圖片 <span class="label-hint">（選填）</span></label>
+      <label class="label">自訂參考圖片 <span class="label-hint">（選填）</span></label>
       <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
         <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFileUpload(event)">
         <div class="upload-placeholder" id="upload-placeholder">

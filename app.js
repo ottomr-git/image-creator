@@ -3,11 +3,24 @@
 const PROXY_URL = 'https://gemini-proxy.otto-mr.workers.dev';
 const MODEL = 'gemini-3.1-flash-image-preview';
 
+// ===== Products =====
+const PRODUCTS = [
+  { id: 'icd-derma-set',       name: '活妍專科保養組', image: 'products/icd/icd-derma-set/LINE_ALBUM_ICD臉部保養_260402_18.jpg' },
+  { id: 'icd-derma-cream',     name: '活妍奇肌霜',     image: 'products/icd/icd-derma-cream/LINE_ALBUM_ICD臉部保養_260402_22.jpg' },
+  { id: 'icd-oil-mist',        name: '油水平衡噴霧',   image: 'products/icd/icd-oil-mist/LINE_ALBUM_ICD臉部保養_260402_16.jpg' },
+  { id: 'icd-calming-gel',     name: '舒緩平衡凝露',   image: 'products/icd/icd-calming-gel/LINE_ALBUM_ICD臉部保養_260402_13.jpg' },
+  { id: 'icd-cleansing-powder',name: '活膚潔顏粉',     image: 'products/icd/icd-cleansing-powder/LINE_ALBUM_ICD臉部保養_260402_26.jpg' },
+  { id: 'icd-cleansing-oil',   name: '淨膚卸妝油',     image: 'products/icd/icd-cleansing-oil/LINE_ALBUM_ICD臉部保養_260402_24.jpg' },
+  { id: 'icd-sunscreen',       name: '極效保濕防曬乳', image: 'products/icd/icd-sunscreen/LINE_ALBUM_ICD臉部保養_260402_9.jpg' },
+  { id: 'icd-bb-cream',        name: '輕透光感BB霜',   image: 'products/icd/icd-bb-cream/LINE_ALBUM_ICD臉部保養_260402_10.jpg' },
+];
+
 // ===== State =====
 let selectedPurpose = 'social';
 let selectedOutput = 'image-text';
 let referenceImageData = null;
 let generatedImageData = null;
+let selectedProductId = null;
 
 // Purpose → aspect ratio mapping
 const PURPOSE_MAP = {
@@ -16,6 +29,62 @@ const PURPOSE_MAP = {
   'slide-h': { ratio: '16:9', label: '簡報配圖（橫）' },
   'slide-v': { ratio: '9:16', label: '簡報配圖（直）' }
 };
+
+// ===== Product Selector =====
+function initProductSelector() {
+  const container = document.getElementById('product-scroll');
+  PRODUCTS.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-thumb-card';
+    card.dataset.id = p.id;
+    card.innerHTML = `<img src="${p.image}" alt="${p.name}"><div class="product-thumb-name">${p.name}</div>`;
+    card.addEventListener('click', () => selectProduct(p, card));
+    container.appendChild(card);
+  });
+}
+
+function selectProduct(product, card) {
+  // 如果已選同一個 → 取消選擇
+  if (selectedProductId === product.id) {
+    selectedProductId = null;
+    referenceImageData = null;
+    card.classList.remove('selected');
+    resetUploadArea();
+    return;
+  }
+
+  // 選新的產品
+  document.querySelectorAll('.product-thumb-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedProductId = product.id;
+
+  // 把產品圖片轉成 base64 作為參考圖
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    const base64Full = canvas.toDataURL('image/jpeg', 0.9);
+    const base64Data = base64Full.split(',')[1];
+    referenceImageData = { mimeType: 'image/jpeg', data: base64Data };
+
+    // 更新上傳區預覽
+    document.getElementById('preview-img').src = base64Full;
+    document.getElementById('upload-placeholder').style.display = 'none';
+    document.getElementById('upload-preview').style.display = 'block';
+    document.getElementById('upload-area').classList.add('has-image');
+  };
+  img.src = product.image;
+}
+
+function resetUploadArea() {
+  document.getElementById('file-input').value = '';
+  document.getElementById('upload-placeholder').style.display = 'flex';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('upload-area').classList.remove('has-image');
+}
 
 // ===== UI Interactions =====
 function selectPurpose(el) {
@@ -57,11 +126,13 @@ function processFile(file) {
 function removeImage(event) {
   event.stopPropagation();
   referenceImageData = null;
-  document.getElementById('file-input').value = '';
-  document.getElementById('upload-placeholder').style.display = 'flex';
-  document.getElementById('upload-preview').style.display = 'none';
-  document.getElementById('upload-area').classList.remove('has-image');
+  selectedProductId = null;
+  document.querySelectorAll('.product-thumb-card').forEach(c => c.classList.remove('selected'));
+  resetUploadArea();
 }
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded', initProductSelector);
 
 // Drag & Drop
 const uploadArea = document.getElementById('upload-area');
